@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import OptionList from "./Components/OptionList"
+import Header from "./Components/Header";
+import axios from "axios";
 
 function App() {
+  let [token, setToken] = useState();
+  useEffect(() => {
+    axios
+      .post(
+        "https://findfalcone.herokuapp.com/token",
+        {},
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        setToken(res.data.token);
+      })
+      .catch((err) => {});
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="App">
+        <Header token={token} />
+        <OptionList/>
+      </div>
+    </>
   );
 }
 
